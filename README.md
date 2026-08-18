@@ -7,7 +7,7 @@ A high-performance, fully automated, and custom-designed bash installer for the 
 ## 🏆 Credits & Copyright
 - **Panel Creator:** [Jishnu](https://github.com/JishnuTheGamer)
 - **Installer Creator, UI Designer & Copyright Holder:** **ChiragSingh**  
-*(© 2024 ChiragSingh. All rights reserved for the Installer codebase, UI design, and automation logic.)*
+*(© 2026 ChiragSingh. All rights reserved for the Installer codebase, UI design, and automation logic.)*
 
 ---
 
