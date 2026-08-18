@@ -1,0 +1,43 @@
+Copyright (c) 2026 ChiragSingh. All Rights Reserved.
+
+================================================================================
+INSTALLER SOFTWARE LICENSE AGREEMENT
+================================================================================
+
+This license governs the use of the "JTG Panel Custom Installer" (the "Software"), 
+including its unique user interface (UI), bash scripting logic, ASCII art design, 
+and Cloudflare automation features, created exclusively by ChiragSingh.
+
+1. OWNERSHIP & COPYRIGHT
+   The Software, including all custom UI designs, scripts, and automation logic, 
+   is the exclusive intellectual property of ChiragSingh. 
+   (Note: The underlying "JTG Panel" application is created by Jishnu and is 
+   subject to its own respective licensing. This license applies ONLY to the 
+   Installer tool provided in this repository).
+
+2. GRANT OF LICENSE
+   You are granted a limited, non-exclusive, non-transferable license to download 
+   and execute this Software solely for the purpose of installing and configuring 
+   the JTG Panel on your own servers or authorized environments (e.g., tmate.io, CodeSandbox).
+
+3. RESTRICTIONS
+   You may NOT:
+   - Copy, modify, or distribute the Installer script without explicit written permission from ChiragSingh.
+   - Remove or alter the copyright notices, author credits, or UI branding within the script.
+   - Claim ownership of the Installer's code, UI design, or automation logic.
+   - Use this Installer for any malicious, illegal, or unauthorized purposes.
+
+4. DISCLAIMER OF WARRANTY
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+   INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+   PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHOR (ChiragSingh) 
+   BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM THE USE OF THIS SOFTWARE.
+
+5. TERMINATION
+   This license is automatically terminated if you fail to comply with any of its terms. 
+   Upon termination, you must cease all use and destroy all copies of the Software.
+
+================================================================================
+For licensing inquiries, custom modifications, or permission requests, 
+please contact the author: ChiragSingh (via GitHub: @ChiragSinghhh)
+================================================================================
