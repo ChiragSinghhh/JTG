@@ -44,7 +44,7 @@ print_banner() {
     clear
     echo -e "${C_CYAN}${C_BOLD}"
     echo "       ██╗████████╗ ██████╗     ██████╗  █████╗ ███╗   ██╗███████╗██╗     "
-    echo "       ██║╚══██╔══╝██╔════╝     ██╔══██╗██╔══██╗████╗  ██║██╔════╝██║     "
+    echo "       ██║══██╔══╝██╔════╝     ██╔══██╗██╔══██╗████╗  ██║██╔════╝██║     "
     echo "       ██║   ██║   ██║  ███╗    ██████╔╝███████║██╔██╗ ██║█████╗  ██║     "
     echo "  ██   ██║   ██║   ██║   ██║    ██╔═══╝ ██╔══██║██║╚██╗██║██╔══╝  ██║     "
     echo "  ╚█████╔╝   ██║   ╚██████╔╝    ██║     ██║  ██║██║ ╚████║███████╗███████╗"
@@ -258,7 +258,7 @@ prompt_docker_install() {
     echo ""
     echo -e "${C_CYAN}  ╭──────────────────────────────────────────────────────────────────────────╮${C_RESET}"
     echo -e "${C_CYAN}  │ ${C_WHITE}${C_BOLD}               STEP 4: DOCKER CONTAINER ENGINE VERIFICATION              ${C_CYAN}│${C_RESET}"
-    echo -e "${C_CYAN}  ╰──────────────────────────────────────────────────────────────────────────╯${C_RESET}"
+    echo -e "${C_CYAN}  ──────────────────────────────────────────────────────────────────────────╯${C_RESET}"
 
     if command -v docker &> /dev/null; then
         log_success "Docker Engine is active ($(docker --version 2>/dev/null | head -n 1))."
@@ -284,6 +284,9 @@ prompt_docker_install() {
     fi
 }
 
+# ==============================================================================
+# CLOUDFLARE INSTALLER & SETUP (STEP 5)
+# ==============================================================================
 prompt_cloudflare_setup() {
     echo ""
     echo -e "${C_CYAN}  ╭──────────────────────────────────────────────────────────────────────────╮${C_RESET}"
@@ -311,11 +314,11 @@ prompt_cloudflare_setup() {
         
         log_success "cloudflared binary installed."
         echo ""
-        echo -e "${C_GOLD}  ┌──────────────────────────────────────────────────────────────────────────┐${C_RESET}"
+        echo -e "${C_GOLD}  ──────────────────────────────────────────────────────────────────────────┐${C_RESET}"
         echo -e "${C_GOLD}  │ ${C_WHITE}${C_BOLD} ACTION REQUIRED: Complete Cloudflare Setup                           ${C_GOLD}│${C_RESET}"
         echo -e "${C_GOLD}  └──────────────────────────────────────────────────────────────────────────┘${C_RESET}"
         echo -e "  ${C_WHITE}To finish the setup for tmate.io / CodeSandbox, we need to link the tunnel.${C_RESET}"
-        echo -e "  ${C_WHITE}Please send your token or the entire code for install to be completed.${C_RESET}"
+        echo -e "  ${C_WHITE}${C_BOLD}Please send your token or the entire code for install to be completed.${C_RESET}"
         echo -e "  ${C_MUTED}(e.g., 'eyJ...' OR 'sudo cloudflared service install eyj...')${C_RESET}"
         echo -e "  ${C_MUTED}(Press Enter to skip if you don't have it yet. You can do this later.)${C_RESET}"
         echo ""
@@ -323,9 +326,11 @@ prompt_cloudflare_setup() {
         
         if [ -n "$cf_input" ]; then
             log_info "Processing Cloudflare configuration..."
+            # Smart detection: If they pasted the full command (contains 'cloudflared'), run it directly.
             if [[ "$cf_input" == *"cloudflared"* ]]; then
                 eval "$cf_input"
             else
+                # If they just pasted the token, wrap it in the install command.
                 sudo cloudflared service install "$cf_input"
             fi
             
@@ -480,7 +485,7 @@ install_production() {
     echo -e "  ${C_MUTED}>>${C_RESET} ${C_WHITE}${C_BOLD}Panel Creator:${C_RESET}          ${C_WHITE}${PANEL_AUTHOR}${C_RESET}"
     echo -e "  ${C_MUTED}>>${C_RESET} ${C_WHITE}${C_BOLD}Installer Version:${C_RESET}      ${C_GOLD}${INSTALLER_VERSION} by ${INSTALLER_AUTHOR}${C_RESET}"
     echo ""
-    echo -e "  ${C_MUTED}┌── Useful Management Commands ───────────────────────────────────────────┐${C_RESET}"
+    echo -e "  ${C_MUTED}┌── Useful Management Commands ───────────────────────────────────────────${C_RESET}"
     echo -e "  ${C_MUTED}│${C_RESET} Check Status:     ${C_CYAN}npx pm2 status${C_RESET}"
     echo -e "  ${C_MUTED}│${C_RESET} Live Logs:        ${C_CYAN}npx pm2 logs jtg-panel${C_RESET}"
     echo -e "  ${C_MUTED}│${C_RESET} Restart Panel:    ${C_CYAN}npx pm2 restart jtg-panel${C_RESET}"
