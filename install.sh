@@ -16,7 +16,7 @@
 #  Repository     : https://github.com/JishnuTheGamer/Jtg
 # ==============================================================================
 
-set -e
+# REMOVED 'set -e' to prevent silent crashes on minor warnings (like apt-cache issues)
 
 # Panel & Installer Core Configuration
 PANEL_TITLE="JTG PANEL"
