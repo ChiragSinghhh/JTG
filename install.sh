@@ -11,40 +11,38 @@
 #  Product Name   : JTG PANEL
 #  Panel Version  : v3.0
 #  Panel Creator  : Jishnu
-#  Installer Ver  : 3.1
+#  Installer Ver  : 1.2 (Custom UI & Cloudflare Integration)
 #  Installer By   : ChiragSingh
 #  Repository     : https://github.com/JishnuTheGamer/Jtg
 # ==============================================================================
 
-# REMOVED 'set -e' to prevent silent crashes on minor warnings (like apt-cache issues)
-
 # Panel & Installer Core Configuration
 PANEL_TITLE="JTG PANEL"
-PANEL_SUBTITLE="JTG PANEL Installer v3.1"
 PANEL_AUTHOR="Jishnu"
 INSTALLER_AUTHOR="ChiragSingh"
-INSTALLER_VERSION="3.1"
+INSTALLER_VERSION="1.2"
 DEFAULT_PROD_PORT=6767
 DEFAULT_DEV_PORT=30000
 REPO_URL="https://github.com/JishnuTheGamer/Jtg.git"
 
-# High-Contrast Red & White ANSI Palette
+# Custom High-Contrast UI Palette (Cyan, Gold, White, Dark)
 C_RESET='\033[0m'
 C_BOLD='\033[1m'
 C_DIM='\033[2m'
-
-# Foreground Colors
-C_RED='\033[38;5;196m'
+C_CYAN='\033[38;5;51m'
+C_GOLD='\033[38;5;220m'
 C_WHITE='\033[38;5;255m'
 C_MUTED='\033[38;5;244m'
+C_SUCCESS='\033[38;5;82m'
+C_ERROR='\033[38;5;196m'
 
 # Background Badges
-BG_RED='\033[48;5;196;38;5;255m'
-BG_WHITE='\033[48;5;255;38;5;196m'
+BG_CYAN='\033[48;5;51;38;5;235m'
+BG_GOLD='\033[48;5;220;38;5;235m'
 
 print_banner() {
     clear
-    echo -e "${C_RED}${C_BOLD}"
+    echo -e "${C_CYAN}${C_BOLD}"
     echo "       ██╗████████╗ ██████╗     ██████╗  █████╗ ███╗   ██╗███████╗██╗     "
     echo "       ██║╚══██╔══╝██╔════╝     ██╔══██╗██╔══██╗████╗  ██║██╔════╝██║     "
     echo "       ██║   ██║   ██║  ███╗    ██████╔╝███████║██╔██╗ ██║█████╗  ██║     "
@@ -52,30 +50,30 @@ print_banner() {
     echo "  ╚█████╔╝   ██║   ╚██████╔╝    ██║     ██║  ██║██║ ╚████║███████╗███████╗"
     echo "   ╚════╝    ╚═╝    ╚═════╝     ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝"
     echo -e "${C_RESET}"
-    echo -e "${C_RED}  ╭──────────────────────────────────────────────────────────────────────────╮${C_RESET}"
-    echo -e "${C_RED}  │ ${C_WHITE}${C_BOLD}                     ${PANEL_SUBTITLE}                    ${C_RED}│${C_RESET}"
-    echo -e "${C_RED}  │ ${C_MUTED}         Next-Gen Game Server & Workload Control Dashboard                ${C_RED}│${C_RESET}"
-    echo -e "${C_RED}  │ ${C_WHITE}                  Panel Creator: ${C_BOLD}${PANEL_AUTHOR}                               ${C_RED}│${C_RESET}"
-    echo -e "${C_RED}  │ ${C_WHITE}                  Installer By:  ${C_BOLD}${INSTALLER_AUTHOR} (v${INSTALLER_VERSION})                        ${C_RED}│${C_RESET}"
-    echo -e "${C_RED}  │ ${C_MUTED}         Repo: ${C_WHITE}https://github.com/JishnuTheGamer/Jtg                      ${C_RED}│${C_RESET}"
-    echo -e "${C_RED}  ╰──────────────────────────────────────────────────────────────────────────╯${C_RESET}"
+    echo -e "${C_CYAN}  ╭──────────────────────────────────────────────────────────────────────────╮${C_RESET}"
+    echo -e "${C_CYAN}  │ ${C_WHITE}${C_BOLD}                     JTG PANEL INSTALLER v${INSTALLER_VERSION}                      ${C_CYAN}│${C_RESET}"
+    echo -e "${C_CYAN}  │ ${C_MUTED}         Next-Gen Game Server & Workload Control Dashboard                ${C_CYAN}│${C_RESET}"
+    echo -e "${C_CYAN}  │ ${C_GOLD}                  Panel Creator: ${C_WHITE}${C_BOLD}${PANEL_AUTHOR}                              ${C_CYAN}│${C_RESET}"
+    echo -e "${C_CYAN}  │ ${C_GOLD}                  Custom Installer By: ${C_WHITE}${C_BOLD}${INSTALLER_AUTHOR}                   ${C_CYAN}│${C_RESET}"
+    echo -e "${C_CYAN}  │ ${C_MUTED}         Repo: ${C_WHITE}https://github.com/JishnuTheGamer/Jtg                      ${C_CYAN}│${C_RESET}"
+    echo -e "${C_CYAN}  ╰──────────────────────────────────────────────────────────────────────────╯${C_RESET}"
     echo ""
 }
 
 log_info() {
-    echo -e " ${C_RED}[INFO]${C_RESET} ${C_WHITE}$1${C_RESET}"
+    echo -e " ${C_CYAN}[INFO]${C_RESET} ${C_WHITE}$1${C_RESET}"
 }
 
 log_success() {
-    echo -e " ${C_WHITE}${C_BOLD}[✓ SUCCESS]${C_RESET} ${C_WHITE}$1${C_RESET}"
+    echo -e " ${C_SUCCESS}${C_BOLD}[✓ SUCCESS]${C_RESET} ${C_WHITE}$1${C_RESET}"
 }
 
 log_warning() {
-    echo -e " ${C_RED}${C_BOLD}[! WARNING]${C_RESET} ${C_WHITE}$1${C_RESET}"
+    echo -e " ${C_GOLD}${C_BOLD}[! WARNING]${C_RESET} ${C_WHITE}$1${C_RESET}"
 }
 
 log_error() {
-    echo -e " ${C_RED}${C_BOLD}[✗ ERROR]${C_RESET} ${C_WHITE}$1${C_RESET}"
+    echo -e " ${C_ERROR}${C_BOLD}[✗ ERROR]${C_RESET} ${C_WHITE}$1${C_RESET}"
 }
 
 check_root() {
@@ -160,21 +158,17 @@ ensure_nodejs() {
 
 prompt_runtime_configuration() {
     echo ""
-    echo -e "${C_RED}  ╭──────────────────────────────────────────────────────────────────────────╮${C_RESET}"
-    echo -e "${C_RED}  │ ${C_WHITE}${C_BOLD}           STEP 1: SELECT SERVER EXECUTION RUNTIME ENGINE                 ${C_RED}│${C_RESET}"
-    echo -e "${C_RED}  ╰──────────────────────────────────────────────────────────────────────────╯${C_RESET}"
+    echo -e "${C_CYAN}  ╭──────────────────────────────────────────────────────────────────────────╮${C_RESET}"
+    echo -e "${C_CYAN}  │ ${C_WHITE}${C_BOLD}           STEP 1: SELECT SERVER EXECUTION RUNTIME ENGINE                 ${C_CYAN}│${C_RESET}"
+    echo -e "${C_CYAN}  ╰──────────────────────────────────────────────────────────────────────────╯${C_RESET}"
     echo -e "  Choose how server processes (Minecraft, Node.js, Python) execute on this node:"
     echo ""
-    echo -e "  ${C_RED}${C_BOLD} [ 1 ] Docker Container Sandbox ${C_WHITE}(Recommended for Production)${C_RESET}"
+    echo -e "  ${C_CYAN}${C_BOLD} [ 1 ] Docker Container Sandbox ${C_WHITE}(Recommended for Production)${C_RESET}"
     echo -e "        ${C_MUTED}Isolated per-server Docker containers with memory & CPU limits.${C_RESET}"
     echo ""
-    echo -e "  ${C_RED}${C_BOLD} [ 2 ] Local Process Engine ${C_MUTED}(Direct Host Execution via Node/Java/Python)${C_RESET}"
+    echo -e "  ${C_GOLD}${C_BOLD} [ 2 ] Local Process Engine ${C_MUTED}(Direct Host Execution via Node/Java/Python)${C_RESET}"
     echo -e "        ${C_MUTED}Spawns background child processes natively directly on the host.${C_RESET}"
     echo ""
-    echo -e "  ${C_MUTED}--------------------------------------------------------------------------${C_RESET}"
-    echo -e "  ${C_WHITE}ℹ Notice: On standard panel (port ${DEFAULT_PROD_PORT}), all server creations use this default.${C_RESET}"
-    echo -e "  ${C_WHITE}  Per-server runtime selection is enabled exclusively in the Developer Panel.${C_RESET}"
-    echo -e "  ${C_MUTED}--------------------------------------------------------------------------${C_RESET}"
     
     local choice
     read -r -p "  Enter Selection [1 or 2, default: 1]: " choice
@@ -198,19 +192,19 @@ prompt_runtime_configuration() {
 
 prompt_theme_selection() {
     echo ""
-    echo -e "${C_RED}  ╭──────────────────────────────────────────────────────────────────────────╮${C_RESET}"
-    echo -e "${C_RED}  │ ${C_WHITE}${C_BOLD}               STEP 2: SELECT PANEL ACCENT COLOR THEME                    ${C_RED}│${C_RESET}"
-    echo -e "${C_RED}  ╰──────────────────────────────────────────────────────────────────────────╯${C_RESET}"
+    echo -e "${C_CYAN}  ╭──────────────────────────────────────────────────────────────────────────╮${C_RESET}"
+    echo -e "${C_CYAN}  │ ${C_WHITE}${C_BOLD}               STEP 2: SELECT PANEL ACCENT COLOR THEME                    ${C_CYAN}│${C_RESET}"
+    echo -e "${C_CYAN}  ╰──────────────────────────────────────────────────────────────────────────╯${C_RESET}"
     echo -e "  Select the primary brand & accent color scheme for the panel interface:"
     echo ""
-    echo -e "  ${C_RED} [ 1 ] ${C_WHITE}Crimson Red   ${C_MUTED}(Signature JTG Red)${C_RESET}"
-    echo -e "  ${C_RED} [ 2 ] ${C_WHITE}Cobalt Blue   ${C_MUTED}(Classic Deep Blue)${C_RESET}"
-    echo -e "  ${C_RED} [ 3 ] ${C_WHITE}Neon Purple   ${C_MUTED}(Cyberpunk Glow)${C_RESET}"
-    echo -e "  ${C_RED} [ 4 ] ${C_WHITE}Cyber Cyan    ${C_MUTED}(Electric Aqua)${C_RESET}"
-    echo -e "  ${C_RED} [ 5 ] ${C_WHITE}Emerald Green ${C_MUTED}(Vibrant Matrix)${C_RESET}"
-    echo -e "  ${C_RED} [ 6 ] ${C_WHITE}Amber Gold    ${C_MUTED}(Warm Radiant)${C_RESET}"
-    echo -e "  ${C_RED} [ 7 ] ${C_WHITE}Vivid Rose    ${C_MUTED}(Pastel Neon)${C_RESET}"
-    echo -e "  ${C_RED} [ 8 ] ${C_WHITE}Clean Slate   ${C_MUTED}(Monochrome Minimal)${C_RESET}"
+    echo -e "  ${C_CYAN} [ 1 ] ${C_WHITE}Crimson Red   ${C_MUTED}(Signature JTG Red)${C_RESET}"
+    echo -e "  ${C_CYAN} [ 2 ] ${C_WHITE}Cobalt Blue   ${C_MUTED}(Classic Deep Blue)${C_RESET}"
+    echo -e "  ${C_CYAN} [ 3 ] ${C_WHITE}Neon Purple   ${C_MUTED}(Cyberpunk Glow)${C_RESET}"
+    echo -e "  ${C_CYAN} [ 4 ] ${C_WHITE}Cyber Cyan    ${C_MUTED}(Electric Aqua)${C_RESET}"
+    echo -e "  ${C_CYAN} [ 5 ] ${C_WHITE}Emerald Green ${C_MUTED}(Vibrant Matrix)${C_RESET}"
+    echo -e "  ${C_CYAN} [ 6 ] ${C_WHITE}Amber Gold    ${C_MUTED}(Warm Radiant)${C_RESET}"
+    echo -e "  ${C_CYAN} [ 7 ] ${C_WHITE}Vivid Rose    ${C_MUTED}(Pastel Neon)${C_RESET}"
+    echo -e "  ${C_CYAN} [ 8 ] ${C_WHITE}Clean Slate   ${C_MUTED}(Monochrome Minimal)${C_RESET}"
     echo ""
     
     local theme_choice
@@ -234,9 +228,9 @@ prompt_theme_selection() {
 
 prompt_java_install() {
     echo ""
-    echo -e "${C_RED}  ╭──────────────────────────────────────────────────────────────────────────╮${C_RESET}"
-    echo -e "${C_RED}  │ ${C_WHITE}${C_BOLD}             STEP 3: JAVA RUNTIME (MINECRAFT LOCAL ENGINE)                ${C_RED}│${C_RESET}"
-    echo -e "${C_RED}  ╰──────────────────────────────────────────────────────────────────────────╯${C_RESET}"
+    echo -e "${C_CYAN}  ╭──────────────────────────────────────────────────────────────────────────╮${C_RESET}"
+    echo -e "${C_CYAN}  │ ${C_WHITE}${C_BOLD}             STEP 3: JAVA RUNTIME (MINECRAFT LOCAL ENGINE)                ${C_CYAN}│${C_RESET}"
+    echo -e "${C_CYAN}  ╰──────────────────────────────────────────────────────────────────────────╯${C_RESET}"
     
     if command -v java &> /dev/null; then
         log_success "Java is already installed ($(java -version 2>&1 | head -n 1))."
@@ -247,15 +241,11 @@ prompt_java_install() {
         read -r -p "  Install OpenJDK Java Runtime on host? [y/N, default: y]: " install_java
         install_java=$(echo "$install_java" | tr -d ' ')
         if [[ "$install_java" =~ ^[Nn]$ ]]; then
-            log_info "Skipping host Java installation. (The panel auto-provisions portable OpenJDK 25/21/17 on demand)."
+            log_info "Skipping host Java installation. (The panel auto-provisions portable OpenJDK on demand)."
         else
             log_info "Installing OpenJDK..."
             if command -v apt-get &> /dev/null; then
-                sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
-                    -o Dpkg::Options::="--force-confdef" \
-                    -o Dpkg::Options::="--force-confold" \
-                    -o Dpkg::Options::="--force-overwrite" \
-                    openjdk-21-jre-headless 2>/dev/null || sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends openjdk-17-jre-headless 2>/dev/null || log_warning "System Java package unavailable. Portable JRE/JDK will be automatically downloaded by panel on demand."
+                sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends openjdk-21-jre-headless 2>/dev/null || sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends openjdk-17-jre-headless 2>/dev/null || true
             elif command -v yum &> /dev/null; then
                 sudo yum install -y -q java-21-openjdk-headless || sudo yum install -y -q java-17-openjdk-headless || true
             fi
@@ -266,9 +256,9 @@ prompt_java_install() {
 
 prompt_docker_install() {
     echo ""
-    echo -e "${C_RED}  ╭──────────────────────────────────────────────────────────────────────────╮${C_RESET}"
-    echo -e "${C_RED}  │ ${C_WHITE}${C_BOLD}               STEP 4: DOCKER CONTAINER ENGINE VERIFICATION              ${C_RED}│${C_RESET}"
-    echo -e "${C_RED}  ╰──────────────────────────────────────────────────────────────────────────╯${C_RESET}"
+    echo -e "${C_CYAN}  ╭──────────────────────────────────────────────────────────────────────────╮${C_RESET}"
+    echo -e "${C_CYAN}  │ ${C_WHITE}${C_BOLD}               STEP 4: DOCKER CONTAINER ENGINE VERIFICATION              ${C_CYAN}│${C_RESET}"
+    echo -e "${C_CYAN}  ╰──────────────────────────────────────────────────────────────────────────╯${C_RESET}"
 
     if command -v docker &> /dev/null; then
         log_success "Docker Engine is active ($(docker --version 2>/dev/null | head -n 1))."
@@ -291,6 +281,66 @@ prompt_docker_install() {
                 log_info "Docker skipped (Local Process mode selected)."
             fi
         fi
+    fi
+}
+
+prompt_cloudflare_setup() {
+    echo ""
+    echo -e "${C_CYAN}  ╭──────────────────────────────────────────────────────────────────────────╮${C_RESET}"
+    echo -e "${C_CYAN}  │ ${C_WHITE}${C_BOLD}           STEP 5: CLOUDFLARE TUNNEL SETUP (For Tmate/CodeSandbox)    ${C_CYAN}│${C_RESET}"
+    echo -e "${C_CYAN}  ╰──────────────────────────────────────────────────────────────────────────╯${C_RESET}"
+    echo -e "  ${C_WHITE}Manual setup on tmate.io or CodeSandbox is difficult. This automates it.${C_RESET}"
+    echo -e "  ${C_WHITE}It will expose your panel securely via HTTPS without opening router ports.${C_RESET}"
+    echo ""
+    read -r -p "  Do you want to set up Cloudflare Tunnel now? [y/N, default: n]: " cf_choice
+    cf_choice=$(echo "$cf_choice" | tr -d ' ' | tr '[:upper:]' '[:lower:]')
+
+    if [[ "$cf_choice" == "y" || "$cf_choice" == "yes" ]]; then
+        log_info "Downloading and installing cloudflared daemon..."
+        if command -v apt-get &> /dev/null; then
+            curl -sL --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+            sudo dpkg -i cloudflared.deb 2>/dev/null || true
+            rm -f cloudflared.deb
+        elif command -v yum &> /dev/null; then
+            sudo yum install -y https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-x86_64.rpm 2>/dev/null || true
+        else
+            curl -sL --output cloudflared https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64
+            chmod +x cloudflared
+            sudo mv cloudflared /usr/local/bin/
+        fi
+        
+        log_success "cloudflared binary installed."
+        echo ""
+        echo -e "${C_GOLD}  ┌──────────────────────────────────────────────────────────────────────────┐${C_RESET}"
+        echo -e "${C_GOLD}  │ ${C_WHITE}${C_BOLD} ACTION REQUIRED: Complete Cloudflare Setup                           ${C_GOLD}│${C_RESET}"
+        echo -e "${C_GOLD}  └──────────────────────────────────────────────────────────────────────────┘${C_RESET}"
+        echo -e "  ${C_WHITE}To finish the setup for tmate.io / CodeSandbox, we need to link the tunnel.${C_RESET}"
+        echo -e "  ${C_WHITE}Please send your token or the entire code for install to be completed.${C_RESET}"
+        echo -e "  ${C_MUTED}(e.g., 'eyJ...' OR 'sudo cloudflared service install eyj...')${C_RESET}"
+        echo -e "  ${C_MUTED}(Press Enter to skip if you don't have it yet. You can do this later.)${C_RESET}"
+        echo ""
+        read -r -p "  > Paste Token or Full Command here: " cf_input
+        
+        if [ -n "$cf_input" ]; then
+            log_info "Processing Cloudflare configuration..."
+            if [[ "$cf_input" == *"cloudflared"* ]]; then
+                eval "$cf_input"
+            else
+                sudo cloudflared service install "$cf_input"
+            fi
+            
+            if [ $? -eq 0 ]; then
+                log_success "Cloudflare Tunnel installed and configured successfully!"
+                sudo systemctl start cloudflared 2>/dev/null || true
+                sudo systemctl enable cloudflared 2>/dev/null || true
+            else
+                log_warning "Cloudflare configuration failed. Please verify your token or command."
+            fi
+        else
+            log_info "Cloudflare setup skipped. You can configure it manually later."
+        fi
+    else
+        log_info "Cloudflare Tunnel setup skipped."
     fi
 }
 
@@ -330,7 +380,7 @@ setup_environment() {
     cat > .env <<EOF
 # ==============================================================================
 # JTG PANEL Configuration
-# Panel Creator: Jishnu | Installer v3.1 by ChiragSingh
+# Panel Creator: Jishnu | Custom Installer v1.2 by ChiragSingh
 # ==============================================================================
 NODE_ENV=${run_mode}
 PORT=${target_port}
@@ -390,15 +440,15 @@ configure_pm2_service() {
 
 create_initial_admin() {
     echo ""
-    echo -e "${C_RED}  ╭──────────────────────────────────────────────────────────────────────────╮${C_RESET}"
-    echo -e "${C_RED}  │ ${C_WHITE}${C_BOLD}                   CREATE PRIMARY OWNER ACCOUNT                           ${C_RED}│${C_RESET}"
-    echo -e "${C_RED}  ╰──────────────────────────────────────────────────────────────────────────╯${C_RESET}"
+    echo -e "${C_CYAN}  ╭──────────────────────────────────────────────────────────────────────────╮${C_RESET}"
+    echo -e "${C_CYAN}  │ ${C_WHITE}${C_BOLD}                   CREATE PRIMARY OWNER ACCOUNT                           ${C_CYAN}│${C_RESET}"
+    echo -e "${C_CYAN}  ╰──────────────────────────────────────────────────────────────────────────╯${C_RESET}"
     npm run createuser || true
 }
 
 install_production() {
     print_banner
-    echo -e " ${BG_RED}${C_BOLD} [ PRODUCTION INSTALLATION ] ${C_RESET} ${C_WHITE}Deploying ${PANEL_TITLE} on port ${DEFAULT_PROD_PORT}${C_RESET}\n"
+    echo -e " ${BG_CYAN}${C_BOLD} [ PRODUCTION INSTALLATION ] ${C_RESET} ${C_WHITE}Deploying ${PANEL_TITLE} on port ${DEFAULT_PROD_PORT}${C_RESET}\n"
     
     check_root
     setup_system_dependencies
@@ -407,6 +457,7 @@ install_production() {
     prompt_theme_selection
     prompt_java_install
     prompt_docker_install
+    prompt_cloudflare_setup
 
     prepare_repository
     setup_environment "$DEFAULT_PROD_PORT" "production"
@@ -422,26 +473,26 @@ install_production() {
     echo -e "${C_WHITE}${C_BOLD}  ║                   ${PANEL_TITLE} INSTALLED SUCCESSFULLY!                     ║${C_RESET}"
     echo -e "${C_WHITE}${C_BOLD}  ╚══════════════════════════════════════════════════════════════════════════╝${C_RESET}"
     echo ""
-    echo -e "  ${C_MUTED}>>${C_RESET} ${C_WHITE}${C_BOLD}Panel Web Interface:${C_RESET}    ${C_RED}${C_BOLD}http://${server_ip}:${DEFAULT_PROD_PORT}${C_RESET}"
-    echo -e "  ${C_MUTED}>>${C_RESET} ${C_WHITE}${C_BOLD}Localhost Access:${C_RESET}       ${C_RED}${C_BOLD}http://localhost:${DEFAULT_PROD_PORT}${C_RESET}"
+    echo -e "  ${C_MUTED}>>${C_RESET} ${C_WHITE}${C_BOLD}Panel Web Interface:${C_RESET}    ${C_CYAN}${C_BOLD}http://${server_ip}:${DEFAULT_PROD_PORT}${C_RESET}"
+    echo -e "  ${C_MUTED}>>${C_RESET} ${C_WHITE}${C_BOLD}Localhost Access:${C_RESET}       ${C_CYAN}${C_BOLD}http://localhost:${DEFAULT_PROD_PORT}${C_RESET}"
     echo -e "  ${C_MUTED}>>${C_RESET} ${C_WHITE}${C_BOLD}Enforced Runtime:${C_RESET}       ${C_WHITE}${SELECTED_RUNTIME:-docker}${C_RESET} (Locked: ${RUNTIME_LOCKED:-true})"
     echo -e "  ${C_MUTED}>>${C_RESET} ${C_WHITE}${C_BOLD}Accent Theme:${C_RESET}           ${C_WHITE}${SELECTED_THEME:-red}${C_RESET}"
     echo -e "  ${C_MUTED}>>${C_RESET} ${C_WHITE}${C_BOLD}Panel Creator:${C_RESET}          ${C_WHITE}${PANEL_AUTHOR}${C_RESET}"
-    echo -e "  ${C_MUTED}>>${C_RESET} ${C_WHITE}${C_BOLD}Installer Version:${C_RESET}      ${C_RED}${INSTALLER_VERSION} by ${INSTALLER_AUTHOR}${C_RESET}"
+    echo -e "  ${C_MUTED}>>${C_RESET} ${C_WHITE}${C_BOLD}Installer Version:${C_RESET}      ${C_GOLD}${INSTALLER_VERSION} by ${INSTALLER_AUTHOR}${C_RESET}"
     echo ""
     echo -e "  ${C_MUTED}┌── Useful Management Commands ───────────────────────────────────────────┐${C_RESET}"
-    echo -e "  ${C_MUTED}│${C_RESET} Check Status:     ${C_RED}npx pm2 status${C_RESET}"
-    echo -e "  ${C_MUTED}│${C_RESET} Live Logs:        ${C_RED}npx pm2 logs jtg-panel${C_RESET}"
-    echo -e "  ${C_MUTED}│${C_RESET} Restart Panel:    ${C_RED}npx pm2 restart jtg-panel${C_RESET}"
-    echo -e "  ${C_MUTED}│${C_RESET} Update Panel:     ${C_RED}bash update.sh${C_RESET}"
-    echo -e "  ${C_MUTED}│${C_RESET} Uninstall:        ${C_RED}bash uninstall.sh${C_RESET}"
+    echo -e "  ${C_MUTED}│${C_RESET} Check Status:     ${C_CYAN}npx pm2 status${C_RESET}"
+    echo -e "  ${C_MUTED}│${C_RESET} Live Logs:        ${C_CYAN}npx pm2 logs jtg-panel${C_RESET}"
+    echo -e "  ${C_MUTED}│${C_RESET} Restart Panel:    ${C_CYAN}npx pm2 restart jtg-panel${C_RESET}"
+    echo -e "  ${C_MUTED}│${C_RESET} Update Panel:     ${C_CYAN}bash update.sh${C_RESET}"
+    echo -e "  ${C_MUTED}│${C_RESET} Uninstall:        ${C_CYAN}bash uninstall.sh${C_RESET}"
     echo -e "  ${C_MUTED}└─────────────────────────────────────────────────────────────────────────┘${C_RESET}"
     echo ""
 }
 
 install_development() {
     print_banner
-    echo -e " ${BG_WHITE}${C_BOLD} [ DEVELOPMENT SETUP ] ${C_RESET} ${C_RED}Configuring ${PANEL_TITLE} Dev Environment on port ${DEFAULT_DEV_PORT}${C_RESET}\n"
+    echo -e " ${BG_GOLD}${C_BOLD} [ DEVELOPMENT SETUP ] ${C_RESET} ${C_WHITE}Configuring ${PANEL_TITLE} Dev Environment on port ${DEFAULT_DEV_PORT}${C_RESET}\n"
     
     setup_system_dependencies
     ensure_nodejs
@@ -456,19 +507,19 @@ install_development() {
 
     echo ""
     log_success "Development workspace ready!"
-    echo -e "  Start development server: ${C_RED}npm run dev${C_RESET}"
+    echo -e "  Start development server: ${C_CYAN}npm run dev${C_RESET}"
 }
 
 # Main Interactive Dispatcher
 while true; do
     print_banner
-    echo -e "  ${C_RED}${C_BOLD} [ 1 ] ${C_WHITE}Install ${PANEL_TITLE} (Production Deployment - Port ${DEFAULT_PROD_PORT})${C_RESET}"
-    echo -e "  ${C_RED}${C_BOLD} [ 2 ] ${C_WHITE}Install ${PANEL_TITLE} (Development Mode - Port ${DEFAULT_DEV_PORT})${C_RESET}"
-    echo -e "  ${C_RED}${C_BOLD} [ 3 ] ${C_WHITE}Update Panel (Pull GitHub updates & rebuild)${C_RESET}"
-    echo -e "  ${C_RED}${C_BOLD} [ 4 ] ${C_WHITE}Create / Reset Administrator Account${C_RESET}"
-    echo -e "  ${C_RED}${C_BOLD} [ 5 ] ${C_WHITE}Restart Panel Service${C_RESET}"
-    echo -e "  ${C_RED}${C_BOLD} [ 6 ] ${C_WHITE}Uninstall Panel${C_RESET}"
-    echo -e "  ${C_RED}${C_BOLD} [ 7 ] ${C_MUTED}Exit${C_RESET}"
+    echo -e "  ${C_CYAN}${C_BOLD} [ 1 ] ${C_WHITE}Install ${PANEL_TITLE} (Production Deployment - Port ${DEFAULT_PROD_PORT})${C_RESET}"
+    echo -e "  ${C_CYAN}${C_BOLD} [ 2 ] ${C_WHITE}Install ${PANEL_TITLE} (Development Mode - Port ${DEFAULT_DEV_PORT})${C_RESET}"
+    echo -e "  ${C_CYAN}${C_BOLD} [ 3 ] ${C_WHITE}Update Panel (Pull GitHub updates & rebuild)${C_RESET}"
+    echo -e "  ${C_CYAN}${C_BOLD} [ 4 ] ${C_WHITE}Create / Reset Administrator Account${C_RESET}"
+    echo -e "  ${C_CYAN}${C_BOLD} [ 5 ] ${C_WHITE}Restart Panel Service${C_RESET}"
+    echo -e "  ${C_CYAN}${C_BOLD} [ 6 ] ${C_WHITE}Uninstall Panel${C_RESET}"
+    echo -e "  ${C_CYAN}${C_BOLD} [ 7 ] ${C_MUTED}Exit${C_RESET}"
     echo ""
     echo -e "  ${C_MUTED}──────────────────────────────────────────────────────────────────────────${C_RESET}"
     
@@ -508,7 +559,7 @@ while true; do
             exit 0
             ;;
         7)
-            echo -e "\n  ${C_RED}Exiting installer. Thank you for using ${PANEL_TITLE}!${C_RESET}\n"
+            echo -e "\n  ${C_CYAN}Exiting installer. Thank you for using ${PANEL_TITLE}!${C_RESET}\n"
             exit 0
             ;;
         *)
