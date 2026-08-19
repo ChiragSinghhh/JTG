@@ -2,15 +2,15 @@
 
 # ==============================================================================
 #       ██╗████████╗ ██████╗     ██████╗  █████╗ ███╗   ██╗███████╗██╗     
-#       ██║╚══██╔══╝██╔════╝     ██╔══██╗██╔══██╗████╗  ██║██════╝██║     
-#       ██║   ██║   ██║  ███╗    ██████╝███████║██╔██╗ ██║█████╗  ██║     
+#       ██║╚══██╔══╝██╔════╝     ██╔══██╗██╔══██╗████╗  ██║██╔════╝██║     
+#       ██║   ██║   ██║  ███╗    ██████╔╝███████║██╔██╗ ██║█████╗  ██║     
 #  ██   ██║   ██║   ██║   ██║    ██╔═══╝ ██╔══██║██║╚██╗██║██╔══╝  ██║     
-#  ╚█████╝   ██║   ╚██████╔╝    ██║     ██║  ██║██║ ╚████║███████╗███████╗
-#   ╚════╝    ╚═╝    ╚═════╝     ╚═╝     ╚═╝  ╚═╝═╝  ╚═══╝╚══════╝╚══════╝
+#  ╚█████╔╝   ██║   ╚██████╔╝    ██║     ██║  ██║██║ ╚████║███████╗███████╗
+#   ╚════╝    ╚═╝    ╚═════╝     ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝
 #
 #  Product Name   : JTG PANEL
 #  Panel Creator  : Jishnu
-#  Script Name    : Cloudflare Tunnel Installer
+#  Script Name    : Cloudflare Tunnel Installer (v1.1 Fixed)
 #  Script By      : ChiragSingh
 #  Repository     : https://github.com/JishnuTheGamer/Jtg
 # ==============================================================================
@@ -29,11 +29,11 @@ print_banner() {
     clear
     echo -e "${C_CYAN}${C_BOLD}"
     echo "       ██╗████████╗ ██████╗     ██████╗  █████╗ ███╗   ██╗███████╗██╗     "
-    echo "       ██║╚══██╔══╝██╔════╝     ██══██╗██╔══██╗████╗  ██║██╔════╝██║     "
+    echo "       ██║╚══██╔══╝██╔════╝     ██╔══██╗██╔══██╗████╗  ██║██╔════╝██║     "
     echo "       ██║   ██║   ██║  ███╗    ██████╔╝███████║██╔██╗ ██║█████╗  ██║     "
     echo "  ██   ██║   ██║   ██║   ██║    ██╔═══╝ ██╔══██║██║╚██╗██║██╔══╝  ██║     "
-    echo "  ╚█████╔╝   ██║   ██████╔╝    ██║     ██║  ██║██║ ╚████║███████╗███████╗"
-    echo "   ════╝    ╚═╝    ╚═════╝     ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝"
+    echo "  ╚█████╔╝   ██║   ╚██████╔╝    ██║     ██║  ██║██║ ╚████║███████╗███████╗"
+    echo "   ╚════╝    ╚═╝    ╚═════╝     ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝"
     echo -e "${C_RESET}"
     echo -e "${C_CYAN}  ╭──────────────────────────────────────────────────────────────────────────╮${C_RESET}"
     echo -e "${C_CYAN}  │ ${C_WHITE}${C_BOLD}               JTG PANEL - CLOUDFLARE TUNNEL INSTALLER                ${C_CYAN}│${C_RESET}"
@@ -61,24 +61,38 @@ log_error() {
 }
 
 install_cloudflared() {
-    log_info "Downloading and installing cloudflared daemon..."
-    if command -v apt-get &> /dev/null; then
-        curl -sL --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
-        sudo dpkg -i cloudflared.deb 2>/dev/null || true
-        rm -f cloudflared.deb
-    elif command -v yum &> /dev/null; then
-        sudo yum install -y https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-x86_64.rpm 2>/dev/null || true
-    else
-        curl -sL --output cloudflared https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64
-        chmod +x cloudflared
-        sudo mv cloudflared /usr/local/bin/
-    fi
+    log_info "Preparing system and installing prerequisites (curl/wget)..."
     
-    if command -v cloudflared &> /dev/null; then
-        log_success "cloudflared binary installed successfully."
+    # Force update and install curl/wget first to prevent "command not found" errors
+    apt-get update -qq >/dev/null 2>&1
+    apt-get install -y -qq curl wget >/dev/null 2>&1
+
+    log_info "Downloading cloudflared directly from GitHub (Bypassing apt GPG issues)..."
+    
+    # Detect architecture
+    local arch="amd64"
+    if [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "arm64" ]; then
+        arch="arm64"
+    fi
+
+    # Download the latest release directly from GitHub (Most reliable method)
+    curl -sL --output cloudflared.deb "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-${arch}.deb"
+    
+    if [ -f "cloudflared.deb" ]; then
+        log_info "Installing package..."
+        dpkg -i cloudflared.deb 2>/dev/null
+        rm -f cloudflared.deb
+        
+        if command -v cloudflared &> /dev/null; then
+            log_success "cloudflared binary installed successfully!"
+            return 0
+        else
+            log_error "Failed to install cloudflared via dpkg."
+            return 1
+        fi
     else
-        log_error "Failed to install cloudflared. Please check your internet connection."
-        exit 1
+        log_error "Failed to download cloudflared. Please check your internet connection."
+        return 1
     fi
 }
 
@@ -101,13 +115,13 @@ setup_tunnel() {
             eval "$cf_input"
         else
             # If they just pasted the token, wrap it in the install command.
-            sudo cloudflared service install "$cf_input"
+            cloudflared service install "$cf_input"
         fi
         
         if [ $? -eq 0 ]; then
             log_success "Cloudflare Tunnel installed and configured successfully!"
-            sudo systemctl start cloudflared 2>/dev/null || true
-            sudo systemctl enable cloudflared 2>/dev/null || true
+            systemctl start cloudflared 2>/dev/null || true
+            systemctl enable cloudflared 2>/dev/null || true
             echo ""
             echo -e "  ${C_CYAN}Tunnel Status:${C_RESET} ${C_SUCCESS}Active & Running${C_RESET}"
         else
@@ -133,15 +147,19 @@ if command -v cloudflared &> /dev/null; then
         exit 0
     fi
 else
-    install_cloudflared
-    setup_tunnel
+    if install_cloudflared; then
+        setup_tunnel
+    else
+        log_error "Installation aborted due to errors."
+        exit 1
+    fi
 fi
 
 echo ""
 echo -e "${C_CYAN}  ┌──────────────────────────────────────────────────────────────────────────┐${C_RESET}"
 echo -e "${C_CYAN}  │ ${C_WHITE}${C_BOLD} MANAGEMENT COMMANDS                                                    ${C_CYAN}│${C_RESET}"
 echo -e "${C_CYAN}  └──────────────────────────────────────────────────────────────────────────┘${C_RESET}"
-echo -e "  ${C_MUTED}Check Status:${C_RESET}   ${C_WHITE}sudo systemctl status cloudflared${C_RESET}"
-echo -e "  ${C_MUTED}View Logs:${C_RESET}      ${C_WHITE}sudo journalctl -u cloudflared -f${C_RESET}"
-echo -e "  ${C_MUTED}Restart:${C_RESET}        ${C_WHITE}sudo systemctl restart cloudflared${C_RESET}"
+echo -e "  ${C_MUTED}Check Status:${C_RESET}   ${C_WHITE}systemctl status cloudflared${C_RESET}"
+echo -e "  ${C_MUTED}View Logs:${C_RESET}      ${C_WHITE}journalctl -u cloudflared -f${C_RESET}"
+echo -e "  ${C_MUTED}Restart:${C_RESET}        ${C_WHITE}systemctl restart cloudflared${C_RESET}"
 echo ""
