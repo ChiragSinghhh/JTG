@@ -1,66 +1,129 @@
-# 🚀 JTG Panel Custom Installer (v3.1)
+<div align="center">
 
-A high-performance, fully automated, and custom-designed bash installer for the **JTG Panel**. Built from the ground up with a unique UI, robust error handling, and seamless **Cloudflare Tunnel** integration, making it perfect for restricted environments like `tmate.io` and `CodeSandbox`.
+# 🚀 JTG Panel Custom Installer
+
+**The Ultimate, High-Performance Bash Installer for JTG Panel**
+
+[![Version](https://img.shields.io/badge/Installer-v1.3-purple?style=for-the-badge)](https://github.com/ChiragSinghhh/JTG)
+[![Panel Version](https://img.shields.io/badge/Panel-v3.2-cyan?style=for-the-badge)](https://github.com/JishnuTheGamer/Jtg)
+[![License](https://img.shields.io/badge/License-Custom-red?style=for-the-badge)](LICENSE)
+[![Status](https://img.shields.io/badge/Status-Active-green?style=for-the-badge)](https://github.com/ChiragSinghhh/JTG)
+
+</div>
 
 ---
 
-## 🏆 Credits & Copyright
-- **Panel Creator:** [Jishnu](https://github.com/JishnuTheGamer)
-- **Installer Creator, UI Designer & Copyright Holder:** **ChiragSingh**  
-*(© 2026 ChiragSingh. All rights reserved for the Installer codebase, UI design, and automation logic.)*
+## 🌟 About The Project
+
+Welcome to the **JTG Panel Custom Installer (v1.3)**. This is not just a basic setup script; it is a completely redesigned, robust, and feature-rich installation environment built from the ground up by **ChiragSingh**. 
+
+Designed specifically to work flawlessly on minimal VPS environments (like tmate.io, CodeSandbox, and Meowlix), this installer automates the deployment of the **JTG Panel (v3.2)** with a sleek UI, smart error handling, and integrated Cloudflare tunneling.
 
 ---
 
-## ✨ Features
-- 🎨 **100% Custom UI:** Sleek Cyan, Gold, and White high-contrast terminal interface.
-- ⚡ **Smart Dependency Management:** Auto-detects and installs only what's missing (Node.js 22 LTS, Docker, Java, Git, etc.).
-- 🌐 **Cloudflare Tunnel Automation:** Specifically designed for `tmate.io` / `CodeSandbox`. Just paste your token or full command, and it handles the rest.
-- 🛡️ **Crash-Resistant:** Removed aggressive `set -e` flags to prevent silent failures on minor sandbox warnings.
-- ⚙️ **Flexible Runtime:** Choose between isolated Docker containers or direct Local Process execution.
+## ✨ Next-Level Features
+
+- 🎨 **Custom Redesigned UI:** A beautiful, high-contrast Purple & Cyan terminal interface that is easy to read and professional.
+- ☁️ **Integrated Cloudflare Tunnel:** Step 6 automatically installs and configures `cloudflared` using a direct GitHub binary download (bypassing buggy apt GPG errors).
+- 🔄 **24/7 Uptime Monitor:** Built-in Step 7 to keep your panel running forever with automatic restarts.
+- ⚡ **Smart Dependency Management:** Automatically detects and installs missing tools (`curl`, `wget`, `git`, `node`) without crashing.
+- 🛡️ **Crash-Resistant:** Optimized for restricted environments. No silent failures on minor sandbox warnings.
+- 📦 **Modular Scripts:** Separate, standalone scripts for Cloudflare, Updating, and Uninstalling.
 
 ---
 
 ## 📥 Quick Installation
 
-Run this single command in your terminal to download and execute the installer:
+> **Note:** This installer requires `sudo` or `root` privileges.
+
+### ⚡ One-Liner Install (Recommended)
+Run this command in your terminal to start the interactive setup:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/ChiragSinghhh/JTG/main/install.sh | sudo bash
+wget -qO - https://raw.githubusercontent.com/ChiragSinghhh/JTG/main/install.sh | sudo bash
 ```
 
-*Alternatively, using `wget`:*
+### 📂 Manual Installation
+If you prefer to download the script first:
+
 ```bash
-wget -qO install.sh https://raw.githubusercontent.com/ChiragSinghhh/JTG/main/install.sh && sudo bash install.sh
+# 1. Download the installer
+wget -qO install.sh https://raw.githubusercontent.com/ChiragSinghhh/JTG/main/install.sh
+
+# 2. Make it executable
+chmod +x install.sh
+
+# 3. Run the installer
+sudo bash install.sh
 ```
 
 ---
 
-## 🛠️ Manual Installation Steps
-If you prefer to download it manually:
-1. Download the script:  
-   `wget -O install.sh https://raw.githubusercontent.com/ChiragSinghhh/JTG/main/install.sh`
-2. Make it executable:  
-   `chmod +x install.sh`
-3. Run with root privileges:  
-   `sudo bash install.sh`
+## ☁️ Standalone Cloudflare Installer
+
+Already installed the panel but need to set up a Cloudflare Tunnel later? Use the dedicated `cf.sh` script. It bypasses standard repository GPG errors by downloading the binary directly from GitHub.
+
+```bash
+wget -qO - https://raw.githubusercontent.com/ChiragSinghhh/JTG/main/cf.sh | sudo bash
+```
 
 ---
 
-## ☁️ Cloudflare Tunnel Setup (For tmate.io / CodeSandbox)
-During the installation (Step 5), the installer will ask if you want to set up a Cloudflare Tunnel. 
-- If you select **Yes**, it will prompt you:  
-  *"Please send your token or the entire code for install to be completed."*
-- You can paste **just the token** (e.g., `eyJ...`) OR the **full command** (e.g., `sudo cloudflared service install eyj...`).
-- The installer is smart enough to detect which one you pasted and will configure it automatically, giving you a secure HTTPS link without port forwarding.
+## 🛠️ Management Commands
+
+Once installed, you can manage your panel using these built-in scripts:
+
+| Action | Command |
+| :--- | :--- |
+| **Update Panel** | `bash update.sh` |
+| **Uninstall Panel** | `bash uninstall.sh` |
+| **Restart Service** | `npx pm2 restart jtg-panel` |
+| **View Live Logs** | `npx pm2 logs jtg-panel` |
 
 ---
 
-## ⚖️ License
-This installer script is proprietary software created by **ChiragSingh**.  
-Usage is permitted for installing the JTG Panel, but redistribution, modification, or claiming ownership of the installer code/UI without explicit permission is strictly prohibited.  
-See the [LICENSE](LICENSE) file for full details.
+##  Terminal Preview
+
+```text
+       ██╗████████╗ ██████╗     ██████╗  █████╗ ███╗   ██╗███████╗██╗     
+       ██║╚══██══╝██╔════╝     ██╔══██╗██╔══██╗████╗  ██║██╔════╝██║     
+       ██║   ██║   ██║  ███╗    ██████╔╝███████║██╔██╗ ██║█████╗  ██║     
+  ██   ██║   ██║   ██║   ██║    ██╔═══╝ ██╔══██║██║╚██╗██║██══╝  ██║     
+  ╚█████╔╝   ██║   ╚██████╝    ██║     ██║  ██║██║ ╚████║███████╗███████╗
+   ╚════╝    ╚═╝    ╚═════╝     ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝
+
+  ────────────────────────────────────────────────────────────────────────
+  │                  JTG PANEL INSTALLER v1.3                       │
+  │         Next-Gen Game Server & Workload Control Dashboard              │
+  │                  Panel Creator: Jishnu                             │
+  │               Custom Installer By: ChiragSingh                      │
+  ────────────────────────────────────────────────────────────────────────
+
+  [1] Install (Production)
+  [2] Install (Development)
+  [3] Update Panel
+  [4] Create Admin Account
+  [5] Restart Panel
+  [6] Uninstall Panel
+  [7] Exit
+```
 
 ---
 
-## 📞 Support
-If you face any issues during installation, please open an issue in this repository or contact the installer maintainer.
+## 🏆 Credits & Copyright
+
+This project consists of two distinct parts. Please respect the ownership of both:
+
+- **🎮 Panel Core (v3.2):** Created and developed by **[Jishnu](https://github.com/JishnuTheGamer)**. All rights to the underlying panel software belong to him.
+- **🛠️ Custom Installer (v1.3):** Designed, coded, and copyrighted by **ChiragSingh**. The UI design, automation logic, Cloudflare integration, and bash scripting are the exclusive intellectual property of ChiragSingh.
+
+> © 2024 ChiragSingh. All rights reserved for the Installer codebase. Redistribution or claiming ownership of the installer UI/logic without permission is strictly prohibited.
+
+---
+
+<div align="center">
+  
+**Made with ❤️ by ChiragSingh**  
+[GitHub](https://github.com/ChiragSinghhh) • [Report Issue](https://github.com/ChiragSinghhh/JTG/issues)
+
+</div>
